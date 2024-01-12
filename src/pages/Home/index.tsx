@@ -57,6 +57,7 @@ export function Home() {
           {menuItems.map((item) => (
             <MenuCard
               key={item.id}
+              id={item.id}
               srcImg={item.srcImg}
               productName={item.productName}
               description={item.description}

@@ -2,22 +2,21 @@ import { ShoppingCart } from "phosphor-react";
 
 import { MenuCardContainer } from "./styled";
 import { Counter } from "../../../../components/Counter";
+import { useState } from "react";
+import { MenuCardItem } from "../../../../constants/products";
 
-export interface MenuCardProps {
-  srcImg: string;
-  productName: string;
-  description: string;
-  tags: string[];
-  price: number;
-}
+interface MenuCardProps extends MenuCardItem {}
 
 export function MenuCard({
+  id,
   srcImg,
   productName,
   description,
   tags,
   price,
 }: MenuCardProps) {
+  const [amount, setAmount] = useState(0);
+
   function formatPrice(price: number): string {
     const options: Intl.NumberFormatOptions = {
       maximumFractionDigits: 2,
@@ -25,6 +24,12 @@ export function MenuCard({
     };
 
     return Intl.NumberFormat("pt-BR", options).format(price);
+  }
+
+  function addToCart() {
+    console.log(
+      `Produto ${productName} adicionado ${amount} vezes no carrinho!`
+    );
   }
 
   return (
@@ -43,11 +48,9 @@ export function MenuCard({
         <span className="price">{formatPrice(price)}</span>
 
         <div>
-          <form>
-            <Counter amount={1} />
-          </form>
+          <Counter amount={amount} setAmount={setAmount} />
 
-          <button>
+          <button onClick={addToCart}>
             <ShoppingCart weight="fill" />
           </button>
         </div>
