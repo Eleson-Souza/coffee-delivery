@@ -1,10 +1,14 @@
 import { ReactNode, createContext, useState } from "react";
 
+export const deliveryPrice = 5;
+
 export interface CartProduct {
   cart: Product[];
+  totalItens: number;
   total: number;
   addItemToCart: (product: Product) => void;
   removeItemFromCart: (id: string) => void;
+  updateItemFromCart: (id: string, product: Product) => void;
   calculateCartTotal: () => void;
 }
 
@@ -19,7 +23,17 @@ export interface Product {
   total: number;
 }
 
-const ShoppingCartContext = createContext<CartProduct | null>(null);
+const initialValue: CartProduct = {
+  cart: [],
+  totalItens: 0,
+  total: 0,
+  addItemToCart: () => {},
+  removeItemFromCart: () => {},
+  updateItemFromCart: () => {},
+  calculateCartTotal: () => {},
+};
+
+export const ShoppingCartContext = createContext<CartProduct>(initialValue);
 
 interface ShoppingCartProviderProps {
   children: ReactNode;
@@ -27,6 +41,7 @@ interface ShoppingCartProviderProps {
 
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
   const [cart, setCart] = useState<Product[]>([]);
+  const [totalItens, setTotalItens] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
 
   function addItemToCart(product: Product) {
@@ -37,21 +52,28 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     setCart(cart.filter((item) => item.id !== id));
   }
 
+  function updateItemFromCart(id: string, product: Product) {
+    setCart(cart.map((item) => (item.id === id ? product : item)));
+  }
+
   function calculateCartTotal() {
-    const totalPrice = cart.reduce((acc, current) => {
+    const totalItensPrice = cart.reduce((acc, current) => {
       return acc + current.price * current.amount;
     }, 0);
 
-    setTotal(totalPrice);
+    setTotalItens(totalItensPrice);
+    setTotal(totalItensPrice + deliveryPrice);
   }
 
   return (
     <ShoppingCartContext.Provider
       value={{
         cart,
+        totalItens,
         total,
         addItemToCart,
         removeItemFromCart,
+        updateItemFromCart,
         calculateCartTotal,
       }}
     >

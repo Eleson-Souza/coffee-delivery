@@ -2,8 +2,12 @@ import { ShoppingCart } from "phosphor-react";
 
 import { MenuCardContainer } from "./styled";
 import { Counter } from "../../../../components/Counter";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { MenuCardItem } from "../../../../constants/products";
+import { ShoppingCartContext } from "../../../../context/ShoppingCartContext";
+import "react-toastify/dist/ReactToastify.css";
+import { toastOptionsDefault } from "../../../../constants/toastify";
+import { toast } from "react-toastify";
 
 interface MenuCardProps extends MenuCardItem {}
 
@@ -15,6 +19,9 @@ export function MenuCard({
   tags,
   price,
 }: MenuCardProps) {
+  const { cart, addItemToCart, updateItemFromCart } =
+    useContext(ShoppingCartContext);
+
   const [amount, setAmount] = useState(0);
 
   function formatPrice(price: number): string {
@@ -27,8 +34,29 @@ export function MenuCard({
   }
 
   function addToCart() {
-    console.log(
-      `Produto ${productName} adicionado ${amount} vezes no carrinho!`
+    const cartItem = cart.find((item) => item.id === id);
+
+    if (!cartItem) {
+      addItemToCart({
+        id,
+        srcImg,
+        productName,
+        description,
+        price,
+        amount,
+        total: price * amount,
+        tags,
+      });
+    } else {
+      cartItem.amount += amount;
+      cartItem.total = price * cartItem.amount;
+
+      updateItemFromCart(id, cartItem);
+    }
+
+    toast.success(
+      `${amount} item(s) adicionados no carrinho.`,
+      toastOptionsDefault
     );
   }
 
@@ -50,7 +78,7 @@ export function MenuCard({
         <div>
           <Counter amount={amount} setAmount={setAmount} />
 
-          <button onClick={addToCart}>
+          <button onClick={addToCart} disabled={amount === 0}>
             <ShoppingCart weight="fill" />
           </button>
         </div>

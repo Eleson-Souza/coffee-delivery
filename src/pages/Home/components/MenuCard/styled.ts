@@ -94,6 +94,11 @@ export const MenuCardContainer = styled.div`
           font-size: 1.375rem;
           color: #fff;
         }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
       }
     }
   }

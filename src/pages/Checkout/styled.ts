@@ -109,44 +109,71 @@ export const CheckoutContainer = styled.main`
     flex: 1;
 
     .product-item {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-
-      hr {
-        border: 1px solid ${({ theme }) => theme["base-button"]};
-      }
-
-      .total {
+      .cart-items {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 1.5rem;
 
-        .sub-item {
-          display: flex;
-          justify-content: space-between;
-
-          font-size: 0%.75rem;
+        hr {
+          border: 1px solid ${({ theme }) => theme["base-button"]};
         }
 
-        .sub-item-total {
-          font-size: 1.25rem;
+        .total {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          .sub-item {
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 0%.75rem;
+          }
+
+          .sub-item-total {
+            font-size: 1.25rem;
+          }
+        }
+
+        .btn-order {
+          padding: 0.75rem 0.5rem;
+          border: none;
+          border-radius: 6px;
+          background: ${({ theme }) => theme.yellow};
+          color: #fff;
+          font-size: 0.875rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          transition: all 0.2s;
+
+          &:hover {
+            background: ${({ theme }) => theme["yellow-dark"]};
+          }
         }
       }
 
-      .btn-order {
-        padding: 0.75rem 0.5rem;
-        border: none;
-        border-radius: 6px;
-        background: ${({ theme }) => theme.yellow};
-        color: #fff;
-        font-size: 0.875rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        transition: all 0.2s;
+      .cart-items-none {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
 
-        &:hover {
-          background: ${({ theme }) => theme["yellow-dark"]};
+        a {
+          width: fit-content;
+          padding: 0.75rem 0.5rem;
+          border: none;
+          border-radius: 6px;
+          background: ${({ theme }) => theme.yellow};
+          color: #fff;
+          font-size: 0.875rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          transition: all 0.2s;
+          text-decoration: none;
+
+          &:hover {
+            background: ${({ theme }) => theme["yellow-dark"]};
+          }
         }
       }
     }

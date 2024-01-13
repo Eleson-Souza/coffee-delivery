@@ -6,7 +6,6 @@ export const CartBadgeContainer = styled.div`
   padding: 0.5rem;
   background: ${(props) => props.theme["yellow-light"]} !important;
   border-radius: 0.375rem;
-  cursor: pointer;
 
   svg {
     font-size: 1.375rem;
