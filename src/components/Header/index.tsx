@@ -14,7 +14,9 @@ export function Header() {
 
   return (
     <HeaderContainer>
-      <img src={logo} alt="logo" />
+      <Link to="/">
+        <img src={logo} alt="logo" />
+      </Link>
 
       <div className="info">
         <div>
