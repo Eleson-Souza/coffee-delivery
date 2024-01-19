@@ -134,3 +134,9 @@ export const menuItems: MenuCardItem[] = [
     price: 35,
   },
 ];
+
+export enum PaymentMethod {
+  CREDIT = "Cartão de Crédito",
+  DEBIT = "Cartão de Débito",
+  MONEY = "Dinheiro",
+}

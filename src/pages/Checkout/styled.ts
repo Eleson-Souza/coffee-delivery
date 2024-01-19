@@ -1,178 +1,123 @@
 import styled from "styled-components";
 
 export const CheckoutContainer = styled.main`
-  display: flex;
-  gap: 2rem;
+  form {
+    display: flex;
+    gap: 32px;
 
-  section,
-  aside {
-    h3 {
-      font-family: "Baloo 2";
-      font-size: 1.125rem;
-      font-weight: 700;
-      line-height: 1.3;
-      margin-bottom: 0.9rem;
-    }
-
-    .box {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-
-      padding: 2.5rem;
-      border-radius: 0.375rem;
-      background: ${({ theme }) => theme["base-card"]};
-
-      header {
-        display: flex;
-        gap: 0.5rem;
-
+    section,
+    aside {
+      h3 {
+        font-family: "Baloo 2";
+        font-size: 18px;
+        font-weight: 700;
         line-height: 1.3;
+        margin-bottom: 14.4px;
+      }
 
-        svg {
-          font-size: 1.375rem;
-          color: ${({ theme }) => theme["yellow-dark"]};
-        }
+      .box {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
 
-        span {
-          color: ${({ theme }) => theme["base-subtitle"]};
+        padding: 40px;
+        border-radius: 6px;
+        background: ${({ theme }) => theme["base-card"]};
+
+        header {
+          display: flex;
+          gap: 8px;
+
+          line-height: 1.3;
+
+          svg {
+            font-size: 22px;
+            color: ${({ theme }) => theme["yellow-dark"]};
+          }
+
+          span {
+            color: ${({ theme }) => theme["base-subtitle"]};
+          }
         }
       }
     }
-  }
 
-  section {
-    width: 40rem;
-
-    .boxes {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-
-      .delivery-address {
-        form {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-
-          input {
-            padding: 0.75rem;
-            border: 1px solid ${({ theme }) => theme["base-button"]};
-            border-radius: 4px;
-            background: ${({ theme }) => theme["base-input"]};
-            font-size: 0.875rem;
-
-            &:focus {
-              outline: 1px solid ${({ theme }) => theme["yellow-dark"]};
-            }
-          }
-
-          .form-group {
-            display: flex;
-            gap: 0.75rem;
-          }
-
-          .home {
-            input:last-child {
-              flex: 1;
-            }
-          }
-
-          .city {
-            input {
-              &:nth-child(1) {
-                width: 35%;
-              }
-
-              &:nth-child(2) {
-                width: 55%;
-              }
-
-              &:nth-child(3) {
-                width: 10%;
-              }
-            }
-          }
-        }
-      }
-
-      .payment-method .methods {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 0.75rem;
-      }
+    section {
+      width: 640px;
     }
-  }
 
-  aside {
-    flex: 1;
+    aside {
+      flex: 1;
 
-    .product-item {
-      .cart-items {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
+      .product-item {
+        max-height: 40.75rem;
+        overflow-y: scroll;
 
-        hr {
-          border: 1px solid ${({ theme }) => theme["base-button"]};
-        }
-
-        .total {
+        .cart-items {
           display: flex;
           flex-direction: column;
-          gap: 0.75rem;
+          gap: 24px;
 
-          .sub-item {
+          hr {
+            border: 0.0625rem solid ${({ theme }) => theme["base-button"]};
+          }
+
+          .total {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 12px;
 
-            font-size: 0%.75rem;
+            .sub-item {
+              display: flex;
+              justify-content: space-between;
+
+              font-size: 0%12px;
+            }
+
+            .sub-item-total {
+              font-size: 20px;
+            }
           }
 
-          .sub-item-total {
-            font-size: 1.25rem;
+          .btn-order {
+            padding: 12px 8px;
+            border: none;
+            border-radius: 0.375rem;
+            background: ${({ theme }) => theme.yellow};
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.2s;
+
+            &:hover {
+              background: ${({ theme }) => theme["yellow-dark"]};
+            }
           }
         }
 
-        .btn-order {
-          padding: 0.75rem 0.5rem;
-          border: none;
-          border-radius: 6px;
-          background: ${({ theme }) => theme.yellow};
-          color: #fff;
-          font-size: 0.875rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          transition: all 0.2s;
+        .cart-items-none {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 32px;
 
-          &:hover {
-            background: ${({ theme }) => theme["yellow-dark"]};
-          }
-        }
-      }
+          a {
+            width: fit-content;
+            padding: 12px 8px;
+            border: none;
+            border-radius: 0.375rem;
+            background: ${({ theme }) => theme.yellow};
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            text-decoration: none;
 
-      .cart-items-none {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-
-        a {
-          width: fit-content;
-          padding: 0.75rem 0.5rem;
-          border: none;
-          border-radius: 6px;
-          background: ${({ theme }) => theme.yellow};
-          color: #fff;
-          font-size: 0.875rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          transition: all 0.2s;
-          text-decoration: none;
-
-          &:hover {
-            background: ${({ theme }) => theme["yellow-dark"]};
+            &:hover {
+              background: ${({ theme }) => theme["yellow-dark"]};
+            }
           }
         }
       }

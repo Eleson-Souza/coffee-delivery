@@ -1,10 +1,23 @@
 import { MapPin, Money, Timer } from "phosphor-react";
 import { OrderConfirmationContainer } from "./styled";
-import { OrderInfo } from "./components/OrderInfo";
 
 import orderSuccessImg from "../../assets/order-success.svg";
+import { useContext } from "react";
+import { ShoppingCartContext } from "../../context/ShoppingCartContext";
+import { NoOrder } from "./components/NoOrder/NoOrder";
 
 export function OrderConfirmation() {
+  const { order } = useContext(ShoppingCartContext);
+
+  if (!order) {
+    return <NoOrder />;
+  }
+
+  const {
+    address: { street, number, neighborhood, city, uf },
+    paymentMethod,
+  } = order;
+
   return (
     <OrderConfirmationContainer>
       <h1>Uhu! Pedido Confirmado</h1>
@@ -18,9 +31,14 @@ export function OrderConfirmation() {
             </div>
             <div>
               <span>
-                Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                Entrega em{" "}
+                <strong>
+                  {street}, {number}
+                </strong>
               </span>
-              <span>Farrapos - Porto Alegre, RS</span>
+              <span>
+                {neighborhood} - {city}, {uf}
+              </span>
             </div>
           </div>
 
@@ -40,7 +58,7 @@ export function OrderConfirmation() {
             </div>
             <div>
               <span>Pagamento na entrega</span>
-              <strong>Cartão de Crédito</strong>
+              <strong>{paymentMethod}</strong>
             </div>
           </div>
         </div>

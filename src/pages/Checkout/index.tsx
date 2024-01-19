@@ -1,12 +1,4 @@
-import {
-  Bank,
-  CreditCard,
-  CurrencyDollar,
-  MapPinLine,
-  Money,
-} from "phosphor-react";
 import { CheckoutContainer } from "./styled";
-import { PaymentMethodCard } from "./components/PaymentMethodCard";
 import { Cart } from "./components/Cart";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -16,8 +8,24 @@ import {
   deliveryPrice,
 } from "../../context/ShoppingCartContext";
 import { formatPrice } from "../../utils/formatNumber";
+import {
+  OrderInfo,
+  OrderInfoForm,
+  zodSchema,
+} from "./components/OrderInfoForm";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PaymentMethod } from "../../constants/products";
 
 export function Checkout() {
+  const { createOrder } = useContext(ShoppingCartContext);
+
+  const methodsForm = useForm<OrderInfo>({
+    resolver: zodResolver(zodSchema),
+  });
+
+  const { handleSubmit } = methodsForm;
+
   const { cart, totalItens, total, calculateCartTotal } =
     useContext(ShoppingCartContext);
   const navigate = useNavigate();
@@ -26,121 +34,96 @@ export function Checkout() {
     calculateCartTotal();
   }, [cart]);
 
-  function handleOrderConfirm() {
+  function handleOrderConfirm(formData: OrderInfo) {
+    const {
+      cep,
+      street,
+      number,
+      complement,
+      neighborhood,
+      city,
+      uf,
+      paymentMethod,
+    } = formData;
+
+    createOrder({
+      address: {
+        cep,
+        street,
+        number,
+        complement,
+        neighborhood,
+        city,
+        uf,
+      },
+      paymentMethod: paymentMethod as PaymentMethod,
+    });
+
     navigate("/order-confirmation");
   }
 
   return (
     <CheckoutContainer>
-      <section>
-        <h3>Complete der pedido</h3>
+      <FormProvider {...methodsForm}>
+        <form onSubmit={handleSubmit(handleOrderConfirm)}>
+          <section>
+            <h3>Complete der pedido</h3>
 
-        <div className="boxes">
-          <div className="box delivery-address">
-            <header>
-              <MapPinLine />
-              <div>
-                <span>Endereço de Entrega</span>
-                <p>Informe o endereço onde deseja receber seu pedido</p>
-              </div>
-            </header>
+            <OrderInfoForm />
+          </section>
 
-            <form>
-              <input
-                type="text"
-                placeholder="CEP"
-                style={{ width: "12.5rem" }}
-              />
+          <aside>
+            <h3>Cafés selecionados</h3>
 
-              <input type="text" placeholder="Rua" />
+            <div className="box product-item">
+              {totalItens > 0 && (
+                <div className="cart-items">
+                  {cart.map((item) => (
+                    <Fragment key={item.id}>
+                      <Cart
+                        id={item.id}
+                        srcImg={item.srcImg}
+                        title={item.productName}
+                        amount={item.amount}
+                        price={item.price}
+                      />
+                      <hr />
+                    </Fragment>
+                  ))}
 
-              <div className="form-group home">
-                <input type="number" placeholder="Número" />
-                <input type="text" placeholder="Complemento" />
-              </div>
+                  <div className="total">
+                    <div className="sub-item">
+                      <span>Total de itens</span>
+                      <span>{formatPrice(totalItens)}</span>
+                    </div>
 
-              <div className="form-group city">
-                <input type="text" placeholder="Bairro" />
-                <input type="text" placeholder="Cidade" />
-                <input type="text" placeholder="UF" />
-              </div>
-            </form>
-          </div>
+                    <div className="sub-item">
+                      <span>Entrega</span>
+                      <span>{formatPrice(deliveryPrice)}</span>
+                    </div>
 
-          <div className="box payment-method">
-            <header>
-              <CurrencyDollar />
-              <div>
-                <span>Pagamento</span>
-                <p>
-                  O pagamento é feito na entrega. Escolha a forma que deseja
-                  pagar
-                </p>
-              </div>
-            </header>
+                    <div className="sub-item sub-item-total">
+                      <strong>Total</strong>
+                      <strong>{formatPrice(total)}</strong>
+                    </div>
+                  </div>
 
-            <div className="methods">
-              <PaymentMethodCard
-                icon={<CreditCard />}
-                title="Cartão de Crédito"
-              />
-              <PaymentMethodCard icon={<Bank />} title="Cartão de Débito" />
-              <PaymentMethodCard icon={<Money />} title="Dinheiro" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <aside>
-        <h3>Cafés selecionados</h3>
-
-        <div className="box product-item">
-          {totalItens > 0 && (
-            <div className="cart-items">
-              {cart.map((item) => (
-                <Fragment key={item.id}>
-                  <Cart
-                    id={item.id}
-                    srcImg={item.srcImg}
-                    title={item.productName}
-                    amount={item.amount}
-                    price={item.price}
-                  />
-                  <hr />
-                </Fragment>
-              ))}
-
-              <div className="total">
-                <div className="sub-item">
-                  <span>Total de itens</span>
-                  <span>{formatPrice(totalItens)}</span>
+                  <button type="submit" className="btn-order">
+                    Confirmar Pedido
+                  </button>
                 </div>
+              )}
 
-                <div className="sub-item">
-                  <span>Entrega</span>
-                  <span>{formatPrice(deliveryPrice)}</span>
+              {totalItens === 0 && (
+                <div className="cart-items-none">
+                  Seu carrinho de compras está vazio.
+                  <Link to="/">Confira os produtos</Link>
                 </div>
-
-                <div className="sub-item sub-item-total">
-                  <strong>Total</strong>
-                  <strong>{formatPrice(total)}</strong>
-                </div>
-              </div>
-
-              <button className="btn-order" onClick={handleOrderConfirm}>
-                Confirmar Pedido
-              </button>
+              )}
             </div>
-          )}
-
-          {totalItens === 0 && (
-            <div className="cart-items-none">
-              Seu carrinho de compras está vazio.
-              <Link to="/">Confira os produtos</Link>
-            </div>
-          )}
-        </div>
-      </aside>
+          </aside>
+        </form>
+      </FormProvider>
     </CheckoutContainer>
   );
 }

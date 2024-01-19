@@ -8,7 +8,7 @@ import { ShoppingCartContext } from "../../context/ShoppingCartContext";
 import { useContext } from "react";
 
 export function Header() {
-  const { cart } = useContext(ShoppingCartContext);
+  const { cart, order } = useContext(ShoppingCartContext);
 
   const quantItens = cart.length;
 
@@ -19,10 +19,12 @@ export function Header() {
       </Link>
 
       <div className="info">
-        <div>
-          <MapPin weight="fill" />
-          Praia Grande, SP
-        </div>
+        {order && (
+          <div>
+            <MapPin weight="fill" />
+            {order.address.city}, {order.address.uf}
+          </div>
+        )}
 
         {quantItens > 0 && (
           <Link to="/checkout">
