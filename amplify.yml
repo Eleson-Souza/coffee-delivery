@@ -5,13 +5,11 @@ frontend:
     preBuild:
       commands:
         - nvm install 18.13.0
-        - node -v
     build:
       commands:
         - yarn install
         - yarn build
 
   artifacts:
-    files:
-      - "**/*"
+    files: "**/*"
     baseDirectory: dist
