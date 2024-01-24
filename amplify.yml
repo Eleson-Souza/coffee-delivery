@@ -11,5 +11,6 @@ frontend:
         - yarn build
 
   artifacts:
-    files: "**/*"
+    files:
+      - "**/*"
     baseDirectory: dist
