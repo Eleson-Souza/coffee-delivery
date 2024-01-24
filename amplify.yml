@@ -1,0 +1,12 @@
+version: 1
+
+frontend:
+  phases:
+    pre_build:
+      commands:
+        - nvm install 18.13.0
+        - node -v
+    build:
+      commands:
+        - yarn install
+        - yarn build
