@@ -2,7 +2,7 @@ version: 1
 
 frontend:
   phases:
-    pre_build:
+    preBuild:
       commands:
         - nvm install 18.13.0
         - node -v
@@ -10,3 +10,8 @@ frontend:
       commands:
         - yarn install
         - yarn build
+
+  artifacts:
+    files:
+      - "**/*"
+    baseDirectory: dist
